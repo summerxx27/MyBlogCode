@@ -10,6 +10,7 @@
 #define cellIdentifier @"cellId"
 #import "UINavigationBar+Extensions.h"
 #import "TableViewCell.h"
+#import "TestViewController.h"
 
 #define HEADERVIEW_HEIGHT 260.0
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -31,6 +32,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(0, 0, 40, 40);
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    [btn setTitle:@"返回" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, HEADERVIEW_HEIGHT)];
     imageView.image = [UIImage imageNamed:@"headerView"];
@@ -64,8 +72,8 @@
     UIColor *color = [UIColor colorWithRed:0.302 green:0.6271 blue:1.0 alpha:1.0];
     CGFloat offset_y = scrollView.contentOffset.y;
     NSLog(@"offset_y === %f", offset_y);
-    if (offset_y > HEADERVIEW_HEIGHT - 2 * 64) {
-        CGFloat alpha = MIN(1, 1 - ((50 - offset_y) / 50));
+    if (offset_y > -44) {
+        CGFloat alpha = MIN(1, 1 - (- offset_y / 64));
         [self.navigationController.navigationBar xtSetBackgroundColor:[color colorWithAlphaComponent: alpha]];
         
     }else
@@ -73,7 +81,6 @@
         [self.navigationController.navigationBar xtSetBackgroundColor:[color colorWithAlphaComponent:0]];
     }
 }
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
