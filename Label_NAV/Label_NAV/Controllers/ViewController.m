@@ -7,11 +7,10 @@
 //
 
 #import "ViewController.h"
-#define cellIdentifier @"cellId"
 #import "UINavigationBar+Extensions.h"
 #import "TableViewCell.h"
-#import "TestViewController.h"
 
+#define cellIdentifier @"cellId"
 #define HEADERVIEW_HEIGHT 260.0
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
