@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @interface UINavigationBar (Extensions)
 - (void)xtSetBackgroundColor:(UIColor *)backgroundColor;
 - (void)xtSetElementsAlpha:(CGFloat)alpha;
 - (void)xtSetTranslationY:(CGFloat)translationY;
 - (void)xtReset;
-
 @end
