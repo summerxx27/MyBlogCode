@@ -12,7 +12,9 @@
 #import "TableViewCell.h"
 #import "TestViewController.h"
 
-#define HEADERVIEW_HEIGHT 260.0
+
+#define NAVBAR_CHANGE_POINT 50
+
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -22,7 +24,8 @@
 - (UITableView *)tableView
 {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -64, self.view.frame.size.width, self.view.frame.size.height + 64) style:UITableViewStylePlain];
+        // 这里 tableView的起始位置为 0
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height + 64) style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         [_tableView registerClass:[TableViewCell class] forCellReuseIdentifier:cellIdentifier];
@@ -39,15 +42,23 @@
     [btn setTitle:@"返回" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, HEADERVIEW_HEIGHT)];
+    // view 的起始位置跟 tableview的一致 也为0
+    UIView *view = [UIView new];
+    view.frame = CGRectMake(0, 0, self.view.frame.size.width, 200);
+    // 调整子视图 即图片的位置 为 -64
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -64, self.view.frame.size.width, 200 + 64)];
     imageView.image = [UIImage imageNamed:@"headerView"];
+    [view addSubview:imageView];
     
     [self.view addSubview:self.tableView];
     _tableView.rowHeight = 44 * 4;
     _tableView.backgroundColor = [UIColor colorWithRed:0.8187 green:0.9776 blue:1.0 alpha:1.0];
-    _tableView.tableHeaderView = imageView;
+    _tableView.tableHeaderView = view ;
     [self.navigationController.navigationBar xtSetBackgroundColor:[UIColor clearColor]];
+}
+- (void)click:(UIButton *)btn
+{
+    
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -72,8 +83,8 @@
     UIColor *color = [UIColor colorWithRed:0.302 green:0.6271 blue:1.0 alpha:1.0];
     CGFloat offset_y = scrollView.contentOffset.y;
     NSLog(@"offset_y === %f", offset_y);
-    if (offset_y > -44) {
-        CGFloat alpha = MIN(1, 1 - (- offset_y / 64));
+    if (offset_y > NAVBAR_CHANGE_POINT) {
+        CGFloat alpha = MIN(1, 1 - ((NAVBAR_CHANGE_POINT + 64 - offset_y) / 64));
         [self.navigationController.navigationBar xtSetBackgroundColor:[color colorWithAlphaComponent: alpha]];
         
     }else
